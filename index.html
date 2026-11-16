@@ -475,26 +475,33 @@
     }
 
     /* ==========================================================================
-       5. 12-SECOND SCROLL-SCRUBBING HERO STAGE (FULL-BLEED BEHIND NAVBAR)
+       5. AUTOPLAY LOOPING HERO STAGE (FULL-BLEED BEHIND NAVBAR)
        ========================================================================== */
     .hero-scroll-track {
       position: relative;
-      height: 350vh;
+      height: auto;
       width: 100%;
       background-color: var(--lacquer-deep);
     }
 
     .hero-sticky-viewport {
-      position: sticky;
-      top: 0;
+      position: relative;
+      top: auto;
       width: 100%;
       height: 100vh;
-      min-height: 620px;
+      height: 100svh;
+      min-height: 0;
       overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
       background-color: var(--lacquer-deep);
+    }
+
+    /* Removed scroll-scrub controls: keep the autoplay hero clean. */
+    .hero-scroll-track .scroll-cue,
+    .hero-scroll-track .hero-hud-footer {
+      display: none !important;
     }
 
     /* Full-bleed background video — 100% crystal clear */
@@ -553,6 +560,49 @@
       display: flex;
       align-items: center;
       pointer-events: none;
+    }
+
+    .hero-brand-message {
+      position: absolute;
+      z-index: 2;
+      top: 50%;
+      left: clamp(1.25rem, 4vw, 2.5rem);
+      right: clamp(1.25rem, 4vw, 2.5rem);
+      max-width: 760px;
+      transform: translateY(-50%);
+      pointer-events: none;
+      color: var(--lacquer-base);
+    }
+
+    .hero-brand-message h1 {
+      max-width: 760px;
+      font-size: clamp(2.35rem, 7vw, 6.25rem);
+      font-weight: 900;
+      line-height: 0.98;
+      letter-spacing: -0.045em;
+      text-wrap: balance;
+      text-shadow: 0 4px 18px rgba(243, 239, 230, 0.58);
+    }
+
+    .hero-brand-message .hero-accent {
+      color: var(--lacquer-base);
+      text-decoration: underline;
+      text-decoration-color: var(--tomato-base);
+      text-decoration-thickness: clamp(3px, 0.45vw, 5px);
+      text-underline-offset: clamp(5px, 1vw, 10px);
+    }
+
+    @media (max-width: 640px) {
+      .hero-brand-message {
+        left: 1rem;
+        right: 1rem;
+      }
+
+      .hero-brand-message h1 {
+        max-width: 100%;
+        font-size: clamp(2.15rem, 11vw, 3.75rem);
+        line-height: 1;
+      }
     }
 
     .hero-act {
@@ -2362,6 +2412,163 @@
         grid-template-columns: 1fr;
       }
     }
+
+
+    /* ======================================================================
+       12. RESPONSIVE FIT PATCH — KEEP ALL CONTENT INSIDE THE VIEWPORT
+       ====================================================================== */
+    html, body {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: clip;
+    }
+
+    body, main, section, header, footer, nav, .container,
+    .hero-scroll-track, .hero-sticky-viewport, .hero-stage-container {
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    .container {
+      width: 100%;
+      padding-inline: clamp(1rem, 4vw, 2.5rem);
+    }
+
+    img, video, canvas, iframe, table {
+      max-width: 100%;
+    }
+
+    /* Prevent long labels, URLs and grid children from forcing page width. */
+    h1, h2, h3, h4, p, a, button, label, span, li,
+    .service-card, .work-card, .contact-card, .footer-col,
+    .hero-act, .hero-act-title, .hero-act-desc {
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    /* Center the hero overlay and keep its edges equal on every viewport. */
+    .hero-stage-container {
+      margin-inline: auto;
+      padding-inline: clamp(1rem, 4vw, 2.5rem);
+    }
+
+    .hero-act {
+      left: clamp(1rem, 4vw, 2.5rem);
+      right: clamp(1rem, 4vw, 2.5rem);
+      width: auto;
+      max-width: min(720px, calc(100% - 2rem));
+    }
+
+    .hero-hud-footer {
+      left: clamp(1rem, 4vw, 2.5rem);
+      right: clamp(1rem, 4vw, 2.5rem);
+      width: auto;
+    }
+
+    @media (max-width: 900px) {
+      .footer-grid,
+      .contact-layout,
+      .about-grid,
+      .pricing-grid,
+      .services-grid,
+      .work-grid,
+      .process-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        padding-inline: 1rem;
+      }
+
+      section.content-section {
+        padding-block: clamp(3.5rem, 12vw, 5rem);
+      }
+
+      .section-title {
+        font-size: clamp(1.8rem, 8vw, 2.5rem);
+      }
+
+      .hero-sticky-viewport {
+        min-height: 560px;
+        height: 100svh;
+      }
+
+      .hero-act {
+        left: 1rem;
+        right: 1rem;
+        max-width: none;
+        padding: clamp(1rem, 4vw, 1.5rem);
+      }
+
+      .hero-act-title {
+        font-size: clamp(2rem, 9vw, 3rem);
+        line-height: 1.08;
+      }
+
+      .hero-act-desc {
+        font-size: 1rem;
+        margin-bottom: 1.25rem;
+      }
+
+      .hero-act-actions,
+      .hero-stat-pills {
+        gap: 0.65rem;
+      }
+
+      .hero-hud-footer {
+        left: 1rem;
+        right: 1rem;
+        bottom: 1rem;
+      }
+
+      .scrub-hud {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .footer-grid,
+      .contact-layout,
+      .about-grid,
+      .pricing-grid,
+      .services-grid,
+      .work-grid,
+      .process-grid,
+      .modal-kpis {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .portfolio-subhead {
+        align-items: flex-start;
+      }
+
+      .modal-backdrop {
+        padding: 0.75rem;
+      }
+
+      .modal-dialog {
+        max-width: 100%;
+        max-height: 92svh;
+        border-radius: var(--radius-lg);
+      }
+    }
+
+    @media (max-width: 380px) {
+      .hero-act-tag {
+        font-size: 0.68rem;
+        letter-spacing: 0.04em;
+      }
+
+      .hero-act-actions .btn {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .scrub-hud {
+        padding: 0.65rem 0.75rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -2422,16 +2629,18 @@
 
   <main id="top">
     <!-- ======================================================================
-         2. 12-SECOND SCROLL-SCRUBBING HERO STAGE (assets/hero.mp4)
+         2. AUTOPLAY LOOPING HERO VIDEO (assets/hero.mp4)
          ====================================================================== -->
     <section class="hero-scroll-track" id="hero-track" aria-label="Cloudrover Interactive Showreel">
       <div class="hero-sticky-viewport" id="hero-stage">
-        <!-- Full-bleed 12s scroll-scrubbed video -->
+        <!-- Clean full-bleed autoplay looping hero video -->
         <video
           id="hero-video"
           src="assets/hero.mp4"
           muted
           playsinline
+          autoplay
+          loop
           preload="auto"
           style="width:100%; height:100%; object-fit:cover;"
         ></video>
@@ -2442,77 +2651,8 @@
         <!-- Atmospheric vignette scrim (no grid lines) -->
         <div class="hero-scrim" aria-hidden="true"></div>
 
-        <!-- 3-Act Kinetic Editorial HUD Overlays -->
-        <div class="hero-stage-container">
-          <!-- ACT I: 0.0s – 4.0s -->
-          <div class="hero-act is-active" id="hero-act-1" style="opacity: 1; transform: translate3d(0, 0, 0);">
-            <div class="hero-act-tag">
-              <span class="act-index">01</span>
-              <span>Sandton Venture &amp; Engineering Studio</span>
-            </div>
-            <h1 class="hero-act-title">
-              Engineering <span class="hero-accent">High-Velocity</span> Digital Platforms.
-            </h1>
-            <p class="hero-act-desc">
-              Cloudrover Holdings architects proprietary SaaS ventures, enterprise web applications, and zero-bloat corporate flagships built for measurable commercial dominance.
-            </p>
-            <div class="hero-act-actions">
-              <a href="#contact" class="btn btn-primary">
-                <span>Start a Project</span>
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-                  <line x1="5" y1="12" x2="19" y2="12" />
-                  <polyline points="12 5 19 12 12 19" />
-                </svg>
-              </a>
-              <a href="#work" class="btn btn-secondary">Explore Live Portfolio</a>
-            </div>
-          </div>
-
-          <!-- ACT II: 4.0s – 8.5s -->
-          <div class="hero-act" id="hero-act-2">
-            <div class="hero-act-tag">
-              <span class="act-index">02</span>
-              <span>Cloud, Edge &amp; Programmatic Search</span>
-            </div>
-            <h2 class="hero-act-title">
-              Sub-Second Speed. <span class="hero-accent">99+ Lighthouse</span> Precision.
-            </h2>
-            <p class="hero-act-desc">
-              From serverless Vercel edge deployments to high-volume recruitment engines like iSpaniLINK, every line of code is tuned for instant rendering and organic search authority.
-            </p>
-            <div class="hero-stat-pills">
-              <div class="hero-stat-pill">
-                <strong>99.98%</strong>
-                <span>Production SLA Uptime</span>
-              </div>
-              <div class="hero-stat-pill">
-                <strong>&lt; 45ms</strong>
-                <span>Global Edge Latency</span>
-              </div>
-              <div class="hero-stat-pill">
-                <strong>09 Live</strong>
-                <span>Ventures &amp; Client Sites</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- ACT III: 8.5s – 12.0s -->
-          <div class="hero-act" id="hero-act-3">
-            <div class="hero-act-tag">
-              <span class="act-index">03</span>
-              <span>Full-Lifecycle Execution</span>
-            </div>
-            <h2 class="hero-act-title">
-              From Architectural Blueprint to <span class="hero-accent">Scale.</span>
-            </h2>
-            <p class="hero-act-desc">
-              Partner directly with senior engineers in Sandton to design, build, and launch resilient digital products with strict NDA protection and transparent milestones.
-            </p>
-            <div class="hero-act-actions">
-              <a href="#contact" class="btn btn-primary">Book Discovery Session</a>
-              <a href="#services" class="btn btn-secondary">Inspect Capabilities</a>
-            </div>
-          </div>
+        <div class="hero-brand-message">
+          <h1>Cloudrover<br /><span class="hero-accent">Master of Web and Software.</span></h1>
         </div>
 
         <!-- Bottom Telemetry & Vine Tomato 12s Scrub HUD -->
@@ -3558,14 +3698,14 @@
   </div>
 
   <!-- ========================================================================
-       9. VANILLA JAVASCRIPT: SCROLL-SCRUB VIDEO ENGINE & UI INTERACTIONS
+       9. VANILLA JAVASCRIPT: HERO VIDEO & UI INTERACTIONS
        ======================================================================== -->
   <script>
     (function () {
       'use strict';
 
       /* ----------------------------------------------------------------------
-         A. SCROLL-CONTROLLED HERO VIDEO SCRUBBER (12s DURATION + LERP + FALLBACK)
+         A. AUTOPLAY HERO VIDEO (NO SCROLL SCRUBBING)
          ---------------------------------------------------------------------- */
       const heroTrack = document.getElementById('hero-track');
       const heroVideo = document.getElementById('hero-video');
@@ -3641,14 +3781,9 @@
         // Mobile / Safari playback unlock on first touch/pointer gesture
         const unlockVideo = () => {
           if (!useFallbackCanvas && heroVideo.paused) {
-            const p = heroVideo.play();
-            if (p && typeof p.then === 'function') {
-              p.then(() => {
-                heroVideo.pause();
-              }).catch(() => {
-                // Ignore autoplay restriction; scrubbing via currentTime still works
-              });
-            }
+            heroVideo.play().catch(() => {
+              // Browser may still restrict playback; retry on a later gesture.
+            });
           }
           window.removeEventListener('touchstart', unlockVideo);
           window.removeEventListener('pointerdown', unlockVideo);
@@ -3760,17 +3895,9 @@
         }
       }
 
-      // Compute normalized scroll progress (0..1) inside the 350vh hero track
+      // Keep the hero on its opening scene; video playback is independent of scroll.
       function updateTargetScrollProgress() {
-        if (!heroTrack) return;
-        const rect = heroTrack.getBoundingClientRect();
-        const scrollableDistance = heroTrack.offsetHeight - window.innerHeight;
-        if (scrollableDistance <= 0) {
-          targetProgress = 0;
-          return;
-        }
-        const scrolled = -rect.top;
-        targetProgress = Math.max(0, Math.min(1, scrolled / scrollableDistance));
+        targetProgress = 0;
       }
 
       // Update kinetic Act 1 / Act 2 / Act 3 opacity & vertical drift
@@ -3828,17 +3955,9 @@
         const timelineTime = currentProgress * HERO_DURATION;
         const targetVideoTime = currentProgress * videoDuration;
 
-        // Drive HTML5 <video> currentTime when ready and not seeking
-        if (!useFallbackCanvas && heroVideo && videoReady) {
-          if (!heroVideo.seeking && Math.abs(targetVideoTime - lastSeekTime) > 0.015) {
-            try {
-              heroVideo.currentTime = targetVideoTime;
-              lastSeekTime = targetVideoTime;
-            } catch (err) {
-              // Fallback gracefully if browser blocks seek before metadata
-            }
-          }
-        } else if (useFallbackCanvas) {
+        // HTML5 <video> plays independently with autoplay + loop.
+        // Keep the procedural fallback canvas behavior unchanged.
+        if (useFallbackCanvas) {
           renderFallbackFrame(currentProgress);
         }
 
@@ -3859,15 +3978,7 @@
       window.addEventListener('scroll', updateTargetScrollProgress, { passive: true });
       window.addEventListener('resize', updateTargetScrollProgress, { passive: true });
 
-      // Clickable HUD Act Jump Buttons
-      actMarkers.forEach((btn) => {
-        btn.addEventListener('click', () => {
-          const ratio = parseFloat(btn.getAttribute('data-scrub-target') || '0');
-          const scrollableDistance = heroTrack.offsetHeight - window.innerHeight;
-          const targetY = heroTrack.offsetTop + scrollableDistance * ratio;
-          window.scrollTo({ top: targetY, behavior: 'smooth' });
-        });
-      });
+      // Legacy timeline markers are no longer used for scroll-based video playback.
 
       updateTargetScrollProgress();
       requestAnimationFrame(scrubLoop);
